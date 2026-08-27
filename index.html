@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Happy Birthday Kuya Josan! 🎂</title>
+
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Trebuchet MS", Arial, sans-serif;
+            background:
+                radial-gradient(circle at 20% 20%, #fff6a8 0 4%, transparent 5%),
+                radial-gradient(circle at 80% 15%, #ffffff 0 3%, transparent 4%),
+                linear-gradient(180deg, #68d8e8 0%, #8be5d3 45%, #5acb75 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #263238;
+        }
+
+        /* Clouds */
+        .cloud {
+            position: fixed;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.75;
+            z-index: -1;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: "";
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .cloud.one {
+            width: 180px;
+            height: 55px;
+            top: 80px;
+            left: -40px;
+        }
+
+        .cloud.one::before {
+            width: 80px;
+            height: 80px;
+            left: 35px;
+            bottom: 10px;
+        }
+
+        .cloud.one::after {
+            width: 60px;
+            height: 60px;
+            left: 95px;
+            bottom: 8px;
+        }
+
+        .cloud.two {
+            width: 200px;
+            height: 60px;
+            top: 170px;
+            right: -70px;
+        }
+
+        .cloud.two::before {
+            width: 85px;
+            height: 85px;
+            left: 45px;
+            bottom: 10px;
+        }
+
+        .cloud.two::after {
+            width: 70px;
+            height: 70px;
+            left: 110px;
+            bottom: 7px;
+        }
+
+        /* Main container */
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px 15px;
+        }
+
+        /* Progress */
+        .progress-container {
+            width: min(800px, 95%);
+            margin-bottom: 15px;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #388e8e;
+            margin-bottom: 7px;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: rgba(255,255,255,0.5);
+            border: 3px solid #263238;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: #ffd83d;
+            transition: width 0.4s ease;
+        }
+
+        /* Card */
+        .card {
+            width: min(800px, 95%);
+            min-height: 600px;
+            background: #fffdf0;
+            border: 7px solid #263238;
+            border-radius: 30px;
+            box-shadow:
+                12px 12px 0 rgba(38,50,56,0.35),
+                inset 0 0 0 5px #ffd83d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative corners */
+        .corner {
+            position: absolute;
+            font-size: 45px;
+        }
+
+        .corner.top-left {
+            top: 12px;
+            left: 15px;
+        }
+
+        .corner.top-right {
+            top: 12px;
+            right: 15px;
+        }
+
+        .corner.bottom-left {
+            bottom: 12px;
+            left: 15px;
+        }
+
+        .corner.bottom-right {
+            bottom: 12px;
+            right: 15px;
+        }
+
+        /* Slides */
+        .slide {
+            display: none;
+            min-height: 600px;
+            padding: 65px 55px 45px;
+            text-align: center;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: slideIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .emoji-big {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        h1 {
+            font-size: clamp(35px, 7vw, 65px);
+            color: #f04f55;
+            text-shadow: 3px 3px 0 #ffd83d;
+            margin-bottom: 18px;
+            line-height: 1.05;
+        }
+
+        h2 {
+            font-size: clamp(28px, 5vw, 48px);
+            color: #168c92;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 27px;
+            color: #f04f55;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 1.7;
+            max-width: 680px;
+            margin: 8px auto;
+        }
+
+        .subtitle {
+            font-size: 23px;
+            color: #53666d;
+        }
+
+        .name {
+            color: #168c92;
+        }
+
+        .role {
+            background: #ffd83d;
+            padding: 8px 18px;
+            border: 4px solid #263238;
+            border-radius: 15px;
+            display: inline-block;
+            margin: 10px 5px;
+            font-weight: bold;
+            box-shadow: 4px 4px 0 #263238;
+        }
+
+        /* Adventure map */
+        .map {
+            width: 100%;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .path {
+            border-top: 7px dashed #f0a83a;
+            position: absolute;
+            width: 85%;
+            top: 55px;
+            left: 7%;
+        }
+
+        .map-points {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .point {
+            width: 90px;
+            height: 90px;
+            background: #8be5d3;
+            border: 5px solid #263238;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            z-index: 2;
+            box-shadow: 4px 4px 0 #263238;
+        }
+
+        .point-label {
+            margin-top: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Appreciation box */
+        .letter {
+            background: #fff9c9;
+            border: 4px solid #263238;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: left;
+            box-shadow: 7px 7px 0 #e8bd35;
+            max-height: 330px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .letter p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        /* Buttons */
+        .controls {
+            width: min(800px, 95%);
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        button {
+            font-family: inherit;
+            font-size: 19px;
+            font-weight: bold;
+            padding: 14px 25px;
+            border: 4px solid #263238;
+            border-radius: 15px;
+            background: #ffd83d;
+            color: #263238;
+            cursor: pointer;
+            box-shadow: 5px 5px 0 #263238;
+            transition: all 0.15s ease;
+        }
+
+        button:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 3px 3px 0 #263238;
+            background: #ffe875;
+        }
+
+        button:active {
+            transform: translate(5px, 5px);
+            box-shadow: none;
+        }
+
+        button.back {
+            background: #8be5d3;
+        }
+
+        button.back:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Final birthday */
+        .final-message {
+            background: #f04f55;
+            color: white;
+            border: 5px solid #263238;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 7px 7px 0 #263238;
+            margin: 20px 0;
+        }
+
+        .final-message h2 {
+            color: #fff;
+            text-shadow: 2px 2px 0 #9e3035;
+        }
+
+        /* QR */
+        #qrcode {
+            margin: 20px auto;
+            background: white;
+            padding: 12px;
+            width: fit-content;
+            border: 5px solid #263238;
+            border-radius: 12px;
+        }
+
+        .qr-note {
+            font-size: 16px;
+            color: #53666d;
+        }
+
+        /* Stars */
+        .stars {
+            font-size: 30px;
+            letter-spacing: 10px;
+            margin: 15px;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .card {
+                min-height: 650px;
+            }
+
+            .slide {
+                min-height: 650px;
+                padding: 55px 25px 35px;
+            }
+
+            p {
+                font-size: 17px;
+                line-height: 1.6;
+            }
+
+            .letter p {
+                font-size: 16px;
+            }
+
+            .emoji-big {
+                font-size: 75px;
+            }
+
+            .point {
+                width: 65px;
+                height: 65px;
+                font-size: 28px;
+            }
+
+            .point-label {
+                font-size: 11px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 12px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cloud one"></div>
+    <div class="cloud two"></div>
+
+    <main class="app">
+
+        <!-- Progress -->
+        <div class="progress-container">
+            <div class="progress-text">
+                Adventure <span id="slideNumber">1</span> of <span id="totalSlides">8</span>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+
+        <!-- CARD -->
+        <section class="card">
+
+            <div class="corner top-left">🌿</div>
+            <div class="corner top-right">☁️</div>
+            <div class="corner bottom-left">⭐</div>
+            <div class="corner bottom-right">🍬</div>
+
+
+            <!-- SLIDE 1 -->
+            <div class="slide active">
+
+                <div class="emoji-big">🗺️</div>
+
+                <h1>A Special Adventure Awaits!</h1>
+
+                <p class="subtitle">
+                    Every great adventure deserves a special celebration...
+                </p>
+
+                <div class="stars">
+                    ⭐ ⭐ ⭐
+                </div>
+
+                <p>
+                    So grab your imaginary backpack,
+                    prepare your best adventure face,
+                    and let's begin!
+                </p>
+
+            </div>
+
+
+            <!-- SLIDE 2 -->
+            <div class="slide">
+
+                <div class="emoji-big">🎂</div>
+
+                <h1>
+                    Happy Birthday
+                    <span class="name">Kuya Josan!</span>
+                </h1>
+
+                <p class="subtitle">
+                    Today is your special day!
+                </p>
+
+                <div>
+                    <span class="role">🛠️ Feature Engineer</span>
+                    <span class="role">✈️ Pilot</span>
+                    <span class="role">🌟 Awesome Friend</span>
+                </div>
+
+                <p>
+                    May your birthday be filled with happiness,
+                    laughter, good food, unforgettable memories,
+                    and absolutely zero stressful missions.
+                </p>
+
+            </div>
+
+
+            <!-- SLIDE 3 -->
+            <div class="slide">
+
+                <div class="emoji-big">🏔️</div>
+
+                <h2>The Adventure Begins...</h2>
+
+                <div class="map">
+
+                    <div class="path"></div>
+
+                    <div class="map-points">
+
+                        <div>
+                            <div class="point">🏠</div>
+                            <div class="point-label">Memories</div>
+                        </div>
+
+                        <div>
+                            <div class="point">😂</div>
+                            <div class="point-label">Laughs</div>
+                        </div>
+
+                        <div>
+                            <div class="point">🤝</div>
+                            <div class="point-label">Friendship</div>
+                        </div>
+
+                        <div>
+                            <div class="point">⭐</div>
+                            <div class="point-label">Future</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <p>
+                    Looking back, it's amazing how many little moments
+                    can turn into memories that actually mean something.
+                </p>
+
+            </div>
+
+
+            <!-- SLIDE 4 -->
+            <div class="slide">
+
+                <div class="emoji-big">💙</div>
+
+                <h2>A Little Appreciation</h2>
+
+                <div class="letter">
+
+                    <p>
+                        Kuya Josan, I just want to take a moment to say
+                        how much I appreciate you as a friend.
+                    </p>
+
+                    <p>
+                        Life gets busy. Everyone has their own problems,
+                        responsibilities, plans, dreams, and random
+                        adventures that they are trying to survive.
+                        But somehow, there are people who make the journey
+                        a little lighter simply by being there.
+                    </p>
+
+                    <p>
+                        You are one of those people.
+                    </p>
+
+                    <p>
+                        Thank you for the conversations, the jokes,
+                        the random moments, the advice, the laughs,
+                        and even the moments where we don't really need
+                        to say anything.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SLIDE 5 -->
+            <div class="slide">
+
+                <div class="emoji-big">🌈</div>
+
+                <h2>Thank You For Being You</h2>
+
+                <div class="letter">
+
+                    <p>
+                        One thing I really appreciate about you is that
+                        you are someone who keeps moving forward.
+                    </p>
+
+                    <p>
+                        Being a Feature Engineer already requires patience,
+                        creativity, problem-solving, and probably a
+                        ridiculous amount of brain power. 😂
+                    </p>
+
+                    <p>
+                        And then there's the pilot side of you.
+                        ✈️
+                    </p>
+
+                    <p>
+                        It honestly makes your life sound like its own
+                        adventure story. You have different dreams,
+                        different skills, different responsibilities,
+                        and somehow you keep pushing forward.
+                    </p>
+
+                    <p>
+                        I hope you never forget how capable you are.
+                        Even when things become difficult, I hope you
+                        remember that you've already made it through
+                        countless challenges before.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SLIDE 6 -->
+            <div class="slide">
+
+                <div class="emoji-big">🌟</div>
+
+                <h2>For All The Memories</h2>
+
+                <div class="letter">
+
+                    <p>
+                        Thank you for all the memories we've created.
+                    </p>
+
+                    <p>
+                        Some memories are big and unforgettable,
+                        while others are just random conversations,
+                        stupid jokes, funny situations, unexpected
+                        adventures, and moments that seemed ordinary
+                        at the time.
+                    </p>
+
+                    <p>
+                        But those ordinary moments are sometimes the ones
+                        that become the most special.
+                    </p>
+
+                    <p>
+                        I hope that no matter how much life changes,
+                        we continue creating more of those moments.
+                    </p>
+
+                    <p>
+                        More laughs.
+                        More adventures.
+                        More stories.
+                        More random plans that somehow become memories.
+                    </p>
+
+                    <p>
+                        And hopefully, fewer moments where we wonder,
+                        "Why did we actually decide to do that?" 😂
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SLIDE 7 -->
+            <div class="slide">
+
+                <div class="emoji-big">🎁</div>
+
+                <h2>My Birthday Wish For You</h2>
+
+                <div class="letter">
+
+                    <p>
+                        On your birthday, I hope you receive more than
+                        just gifts and greetings.
+                    </p>
+
+                    <p>
+                        I hope you receive opportunities that excite you,
+                        people who genuinely support you, experiences
+                        that make you happy, and enough courage to chase
+                        the things you really want.
+                    </p>
+
+                    <p>
+                        May your career continue to grow.
+                    </p>
+
+                    <p>
+                        May your dreams of flying take you to incredible
+                        places. ✈️
+                    </p>
+
+                    <p>
+                        May every challenge you face turn into another
+                        story you can proudly tell someday.
+                    </p>
+
+                    <p>
+                        And most importantly, may you always have reasons
+                        to smile.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SLIDE 8 -->
+            <div class="slide">
+
+                <div class="emoji-big">🎉</div>
+
+                <h1>Happy Birthday, Kuya Josan!</h1>
+
+                <div class="final-message">
+
+                    <h2>Adventure Level: COMPLETE ⭐</h2>
+
+                    <p>
+                        Thank you for being an amazing friend.
+                    </p>
+
+                    <p>
+                        Here's to another year of adventures,
+                        achievements, laughter, dreams,
+                        and unforgettable memories!
+                    </p>
+
+                    <p>
+                        Keep flying. ✈️
+                        Keep building. 🛠️
+                        Keep dreaming. ⭐
+                        Keep being you. 💙
+                    </p>
+
+                    <p>
+                        <strong>
+                            Happy Birthday, Kuya Josan! 🎂🎉
+                        </strong>
+                    </p>
+
+                </div>
+
+                <h3>📱 Birthday Adventure QR Code</h3>
+
+                <div id="qrcode"></div>
+
+                <p class="qr-note">
+                    Scan this QR code to open your birthday adventure!
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTROLS -->
+        <div class="controls">
+
+            <button
+                class="back"
+                id="backBtn"
+                onclick="previousSlide()"
+                disabled>
+                ← Back
+            </button>
+
+            <button
+                id="nextBtn"
+                onclick="nextSlide()">
+                Next Adventure →
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        // ============================================
+        // SLIDESHOW
+        // ============================================
+
+        const slides = document.querySelectorAll(".slide");
+
+        let currentSlide = 0;
+
+        const backBtn = document.getElementById("backBtn");
+        const nextBtn = document.getElementById("nextBtn");
+
+        const slideNumber = document.getElementById("slideNumber");
+        const totalSlides = document.getElementById("totalSlides");
+
+        const progressFill = document.getElementById("progressFill");
+
+        totalSlides.textContent = slides.length;
+
+
+        function showSlide(index) {
+
+            slides.forEach((slide) => {
+                slide.classList.remove("active");
+            });
+
+            slides[index].classList.add("active");
+
+            // Update slide number
+            slideNumber.textContent = index + 1;
+
+            // Update progress
+            const progress =
+                ((index + 1) / slides.length) * 100;
+
+            progressFill.style.width = progress + "%";
+
+            // Back button
+            backBtn.disabled = index === 0;
+
+            // Next button
+            if (index === slides.length - 1) {
+                nextBtn.textContent = "↻ Start Again";
+            } else {
+                nextBtn.textContent = "Next Adventure →";
+            }
+
+            // Scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+
+        function nextSlide() {
+
+            if (currentSlide === slides.length - 1) {
+
+                currentSlide = 0;
+
+            } else {
+
+                currentSlide++;
+
+            }
+
+            showSlide(currentSlide);
+        }
+
+
+        function previousSlide() {
+
+            if (currentSlide > 0) {
+
+                currentSlide--;
+
+                showSlide(currentSlide);
+            }
+        }
+
+
+        // Keyboard controls
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key === "ArrowRight") {
+                nextSlide();
+            }
+
+            if (event.key === "ArrowLeft") {
+                previousSlide();
+            }
+
+        });
+
+
+        // ============================================
+        // QR CODE
+        // ============================================
+
+        // The QR automatically uses the current website URL.
+        // This means you don't need to manually change the QR
+        // after deploying the website.
+
+        new QRCode(
+            document.getElementById("qrcode"),
+            {
+                text: window.location.href,
+                width: 180,
+                height: 180,
+                colorDark: "#263238",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            }
+        );
+
+
+        // Start slideshow
+        showSlide(currentSlide);
+
+    </script>
+
+</body>
+</html>
